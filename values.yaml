@@ -1,0 +1,125 @@
+namespace: tunahan
+
+cmStartName: jackal-start
+cmSupervisordName: jackal-supervisord
+
+cmStartData:
+  jackal_start.sh: |
+      #!/bin/bash
+      sudo sed -i 's/9090/'"$ROSBRIDGE_PORT"'/g' /opt/ros/noetic/share/rosbridge_server/launch/rosbridge_websocket.launch	   
+      source /opt/ros/noetic/setup.bash
+      source ~/catkin_ws/devel/setup.bash
+      export JACKAL_LASER=1
+      export JACKAL_URDF_EXTRAS=$HOME/Desktop/realsense.urdf.xacro  
+      export DISPLAY=:99          
+      sleep 45s
+      roscore &
+      sleep 5s
+      roslaunch jackal_gazebo jackal_world.launch &
+      sleep 5s
+      roslaunch rosbridge_server rosbridge_websocket.launch &
+      sleep 5s
+      roslaunch jackal_navigation odom_navigation_demo.launch &        
+      sleep 5s
+      echo "Session Running. Press [Return] to exit."
+      read
+
+cmSupervisordData:
+  jackal_supervisord.conf: |
+    [program:jackal]
+    environment=HOME="/home/%(ENV_USER)s",USER="%(ENV_USER)s"
+    user=%(ENV_USER)s
+    command=/etc/provedge/jackal_start.sh
+    autorestart=true
+    priority=900
+    stdout_logfile=/tmp/jackal.log
+    stdout_logfile_maxbytes=100MB
+    stdout_logfile_backups=10
+    redirect_stderr=true
+
+deploymentName: jackal-1
+deploymentReplicas: 2
+
+
+# # Default values for ns.
+# # This is a YAML-formatted file.
+# # Declare variables to be passed into your templates.
+
+# replicaCount: 1
+
+# image:
+#   repository: nginx
+#   pullPolicy: IfNotPresent
+#   # Overrides the image tag whose default is the chart appVersion.
+#   tag: ""
+
+# imagePullSecrets: []
+# nameOverride: ""
+# fullnameOverride: ""
+
+# serviceAccount:
+#   # Specifies whether a service account should be created
+#   create: true
+#   # Annotations to add to the service account
+#   annotations: {}
+#   # The name of the service account to use.
+#   # If not set and create is true, a name is generated using the fullname template
+#   name: ""
+
+# podAnnotations: {}
+
+# podSecurityContext: {}
+#   # fsGroup: 2000
+
+# securityContext: {}
+#   # capabilities:
+#   #   drop:
+#   #   - ALL
+#   # readOnlyRootFilesystem: true
+#   # runAsNonRoot: true
+#   # runAsUser: 1000
+
+# service:
+#   type: ClusterIP
+#   port: 80
+
+# ingress:
+#   enabled: false
+#   className: ""
+#   annotations: {}
+#     # kubernetes.io/ingress.class: nginx
+#     # kubernetes.io/tls-acme: "true"
+#   hosts:
+#     - host: chart-example.local
+#       paths:
+#         - path: /
+#           pathType: ImplementationSpecific
+#   tls: []
+#   #  - secretName: chart-example-tls
+#   #    hosts:
+#   #      - chart-example.local
+
+# resources: {}
+#   # We usually recommend not to specify default resources and to leave this as a conscious
+#   # choice for the user. This also increases chances charts run on environments with little
+#   # resources, such as Minikube. If you do want to specify resources, uncomment the following
+#   # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+#   # limits:
+#   #   cpu: 100m
+#   #   memory: 128Mi
+#   # requests:
+#   #   cpu: 100m
+#   #   memory: 128Mi
+
+# autoscaling:
+#   enabled: false
+#   minReplicas: 1
+#   maxReplicas: 100
+#   targetCPUUtilizationPercentage: 80
+#   # targetMemoryUtilizationPercentage: 80
+
+# nodeSelector: {}
+
+# tolerations: []
+
+# affinity: {}

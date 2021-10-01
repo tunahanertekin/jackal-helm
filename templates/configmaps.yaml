@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Values.cmStartName }}-{{ .Release.Revision }}
+  namespace: {{ .Values.namespace }}
+data:
+{{ toYaml .Values.cmStartData | indent 2 }}
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Values.cmSupervisordName }}-{{ .Release.Revision }}
+  namespace: {{ .Values.namespace }}
+data:
+{{ toYaml .Values.cmSupervisordData | indent 2 }}
