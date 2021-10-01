@@ -38,7 +38,7 @@ cmSupervisordData:
     redirect_stderr=true
 
 deploymentName: jackal-1
-deploymentReplicas: 2
+deploymentReplicas: 1
 
 
 # # Default values for ns.
