@@ -19,13 +19,13 @@ spec:
         image: hgtunc/boardmarker:webvizv2
         env:
         - name: WEBVIZ_PORT
-          value: "31601"
+          value: "{{ .Values.webvizPort }}"
         stdin: true
         tty: true		  
         ports:
         - name: webviz
-          containerPort: 31601
-          hostPort: 31601  
+          containerPort: {{ .Values.webvizPort }}
+          hostPort: {{ .Values.webvizPort }}  
           protocol: TCP
         volumeMounts:
       - name: {{ .Values.deploymentName }}-{{ .Release.Revision }}
@@ -36,31 +36,31 @@ spec:
         - name: USER
           value: "user"
         - name: NEKO_BIND
-          value: "31001"
+          value: "{{ .Values.httpPort }}"
         - name: NEKO_UDP_PORT
-          value: "59001-59001"
+          value: "{{ .Values.webrtcPort }}-{{ .Values.webrtcPort }}"
         - name: THEIA_PORT
-          value: "31501"
+          value: "{{ .Values.theiaPort }}"
         - name: ROSBRIDGE_PORT
-          value: "31701"
+          value: "{{ .Values.rosbridgePort }}"
         stdin: true
         tty: true		  
         ports:
         - name: http
-          containerPort: 31001
-          hostPort: 31001
+          containerPort: {{ .Values.httpPort }}
+          hostPort: {{ .Values.httpPort }}
           protocol: TCP
         - name: webrtc
-          containerPort: 31002
-          hostPort: 31002  
+          containerPort: {{ .Values.webrtcPort }}
+          hostPort: {{ .Values.webrtcPort }}  
           protocol: UDP
         - name: theia
-          containerPort: 31501
-          hostPort: 31501  
+          containerPort: {{ .Values.theiaPort }}
+          hostPort: {{ .Values.theiaPort }}
           protocol: TCP
         - name: rosbridge
-          containerPort: 31701
-          hostPort: 31701  
+          containerPort: {{ .Values.rosbridgePort }}
+          hostPort: {{ .Values.rosbridgePort }}
           protocol: TCP
         volumeMounts:
         - mountPath: /dev/shm

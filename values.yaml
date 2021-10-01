@@ -1,45 +1,14 @@
 namespace: tunahan
-
 cmStartName: jackal-start
 cmSupervisordName: jackal-supervisord
-
-cmStartData:
-  jackal_start.sh: |
-      #!/bin/bash
-      sudo sed -i 's/9090/'"$ROSBRIDGE_PORT"'/g' /opt/ros/noetic/share/rosbridge_server/launch/rosbridge_websocket.launch	   
-      source /opt/ros/noetic/setup.bash
-      source ~/catkin_ws/devel/setup.bash
-      export JACKAL_LASER=1
-      export JACKAL_URDF_EXTRAS=$HOME/Desktop/realsense.urdf.xacro  
-      export DISPLAY=:99          
-      sleep 45s
-      roscore &
-      sleep 5s
-      roslaunch jackal_gazebo jackal_world.launch &
-      sleep 5s
-      roslaunch rosbridge_server rosbridge_websocket.launch &
-      sleep 5s
-      roslaunch jackal_navigation odom_navigation_demo.launch &        
-      sleep 5s
-      echo "Session Running. Press [Return] to exit."
-      read
-
-cmSupervisordData:
-  jackal_supervisord.conf: |
-    [program:jackal]
-    environment=HOME="/home/%(ENV_USER)s",USER="%(ENV_USER)s"
-    user=%(ENV_USER)s
-    command=/etc/provedge/jackal_start.sh
-    autorestart=true
-    priority=900
-    stdout_logfile=/tmp/jackal.log
-    stdout_logfile_maxbytes=100MB
-    stdout_logfile_backups=10
-    redirect_stderr=true
-
 deploymentName: jackal-1
 deploymentReplicas: 2
 
+httpPort: 31001
+webrtcPort: 31002
+theiaPort: 31003
+rosbridgePort: 31004
+webvizPort: 31005
 
 # # Default values for ns.
 # # This is a YAML-formatted file.

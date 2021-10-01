@@ -4,7 +4,25 @@ metadata:
   name: {{ .Values.cmStartName }}-{{ .Release.Revision }}
   namespace: {{ .Values.namespace }}
 data:
-{{ toYaml .Values.cmStartData | indent 2 }}
+  jackal_start.sh: |
+        #!/bin/bash
+        sudo sed -i 's/9090/'"$ROSBRIDGE_PORT"'/g' /opt/ros/noetic/share/rosbridge_server/launch/rosbridge_websocket.launch	   
+        source /opt/ros/noetic/setup.bash
+        source ~/catkin_ws/devel/setup.bash
+        export JACKAL_LASER=1
+        export JACKAL_URDF_EXTRAS=$HOME/Desktop/realsense.urdf.xacro  
+        export DISPLAY=:99          
+        sleep 45s
+        roscore &
+        sleep 5s
+        roslaunch jackal_gazebo jackal_world.launch &
+        sleep 5s
+        roslaunch rosbridge_server rosbridge_websocket.launch &
+        sleep 5s
+        roslaunch jackal_navigation odom_navigation_demo.launch &        
+        sleep 5s
+        echo "Session Running. Press [Return] to exit."
+        read
 
 ---
 apiVersion: v1
@@ -13,4 +31,14 @@ metadata:
   name: {{ .Values.cmSupervisordName }}-{{ .Release.Revision }}
   namespace: {{ .Values.namespace }}
 data:
-{{ toYaml .Values.cmSupervisordData | indent 2 }}
+  jackal_supervisord.conf: |
+      [program:jackal]
+      environment=HOME="/home/%(ENV_USER)s",USER="%(ENV_USER)s"
+      user=%(ENV_USER)s
+      command=/etc/provedge/jackal_start.sh
+      autorestart=true
+      priority=900
+      stdout_logfile=/tmp/jackal.log
+      stdout_logfile_maxbytes=100MB
+      stdout_logfile_backups=10
+      redirect_stderr=true

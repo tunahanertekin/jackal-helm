@@ -7,31 +7,32 @@ spec:
   type: NodePort
   externalTrafficPolicy: Local
   ports:
-  - port: 31001
-    targetPort: 31001
-    nodePort: 31001
+  - port: {{ .Values.httpPort }}
+    targetPort: {{ .Values.httpPort }}
+    nodePort: {{ .Values.httpPort }}
     protocol: TCP
     name: http
-  - port: 31501
-    targetPort: 31501
-    nodePort: 31501
-    protocol: TCP
-    name: theia
-  - port: 31601
-    targetPort: 31601
-    nodePort: 31601
-    protocol: TCP
-    name: webviz
-  - port: 31701
-    targetPort: 31701
-    nodePort: 31701
-    protocol: TCP
-    name: rosbridge
-  - port: 31002
-    targetPort: 31002
-    nodePort: 31002
+  - port: {{ .Values.webrtcPort }}
+    targetPort: {{ .Values.webrtcPort }}
+    nodePort: {{ .Values.webrtcPort }}
     protocol: UDP
     name: webrtc
+  - port: {{ .Values.theiaPort }}
+    targetPort: {{ .Values.theiaPort }}
+    nodePort: {{ .Values.theiaPort }}
+    protocol: TCP
+    name: theia
+  - port: {{ .Values.rosbridgePort }}
+    targetPort: {{ .Values.rosbridgePort }}
+    nodePort: {{ .Values.rosbridgePort }}
+    protocol: TCP
+    name: rosbridge
+  - port: {{ .Values.webvizPort }}
+    targetPort: {{ .Values.webvizPort }}
+    nodePort: {{ .Values.webvizPort }}
+    protocol: TCP
+    name: webviz
+
   selector:
     app: {{ .Values.deploymentName }}-{{ .Release.Revision }}	  
   selector:
