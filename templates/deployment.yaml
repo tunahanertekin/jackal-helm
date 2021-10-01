@@ -78,10 +78,10 @@ spec:
           name: robot-theia-start
         - mountPath: /etc/provedge/supervisord/jackal_supervisord.conf
           subPath: jackal_supervisord.conf
-          name: {{ .Values.cmSupervisordName }}
+          name: {{ .Values.cmSupervisordName }}-{{ .Release.Revision }}
         - mountPath: /etc/provedge/jackal_start.sh
           subPath: jackal_start.sh
-          name: {{ .Values.cmStartName }}
+          name: {{ .Values.cmStartName }}-{{ .Release.Revision }}
         - mountPath: /var/www/js/app.08718670.js
           subPath: app.08718670.js
           name: robot-app-js
@@ -106,13 +106,13 @@ spec:
         configMap:
           name: robot-theia-supervisord
           defaultMode: 0777
-      - name: {{ .Values.cmStartName }}
+      - name: {{ .Values.cmStartName }}-{{ .Release.Revision }}
         configMap:
-          name: {{ .Values.cmStartName }}
+          name: {{ .Values.cmStartName }}-{{ .Release.Revision }}
           defaultMode: 0777
-      - name: {{ .Values.cmSupervisordName }}
+      - name: {{ .Values.cmSupervisordName }}-{{ .Release.Revision }}
         configMap:
-          name: {{ .Values.cmSupervisordName }}
+          name: {{ .Values.cmSupervisordName }}-{{ .Release.Revision }}
           defaultMode: 0777
       - name: robot-app-js
         configMap:
