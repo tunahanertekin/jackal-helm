@@ -1,0 +1,10 @@
+cmStartName: jackal-start
+cmSupervisordName: jackal-supervisord
+deploymentName: jackal-1
+deploymentReplicas: 1
+httpPort: 31001
+namespace: tunaxxx
+rosbridgePort: 31004
+theiaPort: 31003
+webrtcPort: 31002
+webvizPort: 31005
