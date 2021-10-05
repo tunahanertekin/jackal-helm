@@ -1,6 +1,6 @@
-cmStartName: jackal-start-1633421247
-cmSupervisordName: jackal-supervisord-1633421247
-deploymentName: jackal-1-1633421247
+cmStartName: jackal-start-1633422845
+cmSupervisordName: jackal-supervisord-1633422845
+deploymentName: jackal-1-1633422845
 deploymentReplicas: 2
 httpPort: 31006
 namespace: tunahan
