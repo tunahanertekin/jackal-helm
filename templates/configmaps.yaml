@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ .Values.cmStartName }}-{{ .Release.Revision }}
+  name: {{ .Values.cmStartName }}
   namespace: {{ .Values.namespace }}
 data:
   jackal_start.sh: |
@@ -28,7 +28,7 @@ data:
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ .Values.cmSupervisordName }}-{{ .Release.Revision }}
+  name: {{ .Values.cmSupervisordName }}
   namespace: {{ .Values.namespace }}
 data:
   jackal_supervisord.conf: |

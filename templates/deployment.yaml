@@ -1,21 +1,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .Values.deploymentName }}-{{ .Release.Revision }}
+  name: {{ .Values.deploymentName }}
   namespace: {{ .Values.namespace }}
 spec:
   replicas: {{ .Values.deploymentReplicas }}
   selector:
     matchLabels:
-      app: {{ .Values.deploymentName }}-{{ .Release.Revision }}
+      app: {{ .Values.deploymentName }}
   template:
     metadata:
       labels:
-        app: {{ .Values.deploymentName }}-{{ .Release.Revision }}
+        app: {{ .Values.deploymentName }}
     spec:
-      hostname: {{ .Values.deploymentName }}-{{ .Release.Revision }}
+      hostname: {{ .Values.deploymentName }}
       containers:
-      - name: {{ .Values.deploymentName }}-{{ .Release.Revision }}-webviz
+      - name: {{ .Values.deploymentName }}-webviz
         image: hgtunc/boardmarker:webvizv2
         env:
         - name: WEBVIZ_PORT
@@ -28,7 +28,7 @@ spec:
           hostPort: {{ .Values.webvizPort }}  
           protocol: TCP
         volumeMounts:
-      - name: {{ .Values.deploymentName }}-{{ .Release.Revision }}
+      - name: {{ .Values.deploymentName }}
         image: hgtunc/boardmarker:jackalv2
         env:
         - name: VIDEO_PORT
@@ -78,10 +78,10 @@ spec:
           name: robot-theia-start
         - mountPath: /etc/provedge/supervisord/jackal_supervisord.conf
           subPath: jackal_supervisord.conf
-          name: {{ .Values.cmSupervisordName }}-{{ .Release.Revision }}
+          name: {{ .Values.cmSupervisordName }}
         - mountPath: /etc/provedge/jackal_start.sh
           subPath: jackal_start.sh
-          name: {{ .Values.cmStartName }}-{{ .Release.Revision }}
+          name: {{ .Values.cmStartName }}
         - mountPath: /var/www/js/app.08718670.js
           subPath: app.08718670.js
           name: robot-app-js
@@ -106,13 +106,13 @@ spec:
         configMap:
           name: robot-theia-supervisord
           defaultMode: 0777
-      - name: {{ .Values.cmStartName }}-{{ .Release.Revision }}
+      - name: {{ .Values.cmStartName }}
         configMap:
-          name: {{ .Values.cmStartName }}-{{ .Release.Revision }}
+          name: {{ .Values.cmStartName }}
           defaultMode: 0777
-      - name: {{ .Values.cmSupervisordName }}-{{ .Release.Revision }}
+      - name: {{ .Values.cmSupervisordName }}
         configMap:
-          name: {{ .Values.cmSupervisordName }}-{{ .Release.Revision }}
+          name: {{ .Values.cmSupervisordName }}
           defaultMode: 0777
       - name: robot-app-js
         configMap:
