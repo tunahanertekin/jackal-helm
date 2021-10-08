@@ -1,7 +1,7 @@
 cmStartName: jackal-start
 cmSupervisordName: jackal-supervisord
 deploymentName: jackal-1
-deploymentReplicas: 1
+deploymentReplicas: 0
 httpPort: 31001
 namespace: tunahan
 rosbridgePort: 31004
